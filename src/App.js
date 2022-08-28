@@ -201,6 +201,7 @@ function NavBar(props) {
   console.log('collapsed state:', collapsed)
   return (
     <Sider
+      collapsedWidth={0}
       trigger={null}
       collapsible
       breakpoint="lg"
