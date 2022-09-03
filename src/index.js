@@ -1,26 +1,22 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.css'
-import reportWebVitals from './reportWebVitals'
-import { ConfigProvider } from 'antd'
-import locale from 'antd/es/date-picker/locale/ru_RU'
-import { createTheme } from '@mui/material/styles'
-import { ThemeProvider } from '@emotion/react'
 import App from './App'
-import Layout from 'antd/es/layout/layout'
+import reportWebVitals from './reportWebVitals'
+import { ConfigProvider, Layout } from 'antd'
+import locale from 'antd/es/date-picker/locale/ru_RU'
+import Login from './pages/Login/Login'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
-const mdTheme = createTheme()
 root.render(
-  <React.StrictMode>
-    <ConfigProvider locale={locale}>
-      <ThemeProvider theme={mdTheme}>
-        <Layout style={{ minHeight: '100vh' }}>
-          <App />
-        </Layout>
-      </ThemeProvider>
-    </ConfigProvider>
-  </React.StrictMode>
+    <React.StrictMode>
+        <ConfigProvider locale={locale}>
+            <Layout style={{ minHeight: '100vh' }}>
+                <App />
+                {/*<Login />*/}
+            </Layout>
+        </ConfigProvider>
+    </React.StrictMode>
 )
 
 // If you want to start measuring performance in your app, pass a function

@@ -1,6 +1,7 @@
 @import '~antd/dist/antd.css';
 .logo {
   height: 44px;
+  width: 192px;
   margin: 10px 24px 10px 24px;
 }
 
@@ -10,4 +11,11 @@
 
 .site-layout-background {
   background: #fff;
+}
+
+.space-align-block {
+  flex: none;
+  margin: 8px 4px;
+  padding: 4px;
+  border: 1px solid #40a9ff;
 }

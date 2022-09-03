@@ -1,0 +1,19 @@
+.loginBox {
+  padding: 24px;
+  background: #fff;
+}
+
+.logo {
+  max-width: 100%;
+  margin-bottom: 24px;
+}
+
+.logonFormButton {
+  width: 100%;
+}
+
+.loginForm {
+  margin-bottom: 4px;
+}
+
+/*# sourceMappingURL=Login.module.css.map */

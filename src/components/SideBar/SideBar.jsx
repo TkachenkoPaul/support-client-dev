@@ -1,5 +1,6 @@
-import React from 'react'
-import logo from '../logo.png'
+import React, { useState } from 'react'
+// import logo from '../logo.png'
+import logo from '../../pages/Login/logo.png'
 import { Layout, Menu } from 'antd'
 import { uuid } from 'uuidv4'
 import {
@@ -36,21 +37,12 @@ const items = [
     getItem('Исходщие', uuid(), <ArrowLeftOutlined />),
     getItem('Потерянные', uuid(), <CloseOutlined />)
   ]),
-  getItem('Настройки', uuid(), <SettingOutlined />, [
-    getItem('Пользователи', uuid(), <UserOutlined />)
-  ])
+  getItem('Настройки', uuid(), <SettingOutlined />, [getItem('Пользователи', uuid(), <UserOutlined />)])
 ]
 const SideBar = (props) => (
   <Sider breakpoint="lg" collapsedWidth="0" width={240}>
     <img src={logo} className={'logo'} alt="logo" />
-    <Menu
-      style={{ marginTop: 24 }}
-      theme="dark"
-      defaultSelectedKeys={['1']}
-      defaultOpenKeys={['sub1']}
-      mode="inline"
-      items={items}
-    />
+    <Menu style={{ marginTop: 24 }} theme="dark" defaultSelectedKeys={['1']} defaultOpenKeys={['sub1']} mode="inline" items={items} />
   </Sider>
 )
 
