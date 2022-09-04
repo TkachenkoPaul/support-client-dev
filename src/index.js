@@ -5,17 +5,26 @@ import App from './App'
 import reportWebVitals from './reportWebVitals'
 import { ConfigProvider, Layout } from 'antd'
 import locale from 'antd/es/date-picker/locale/ru_RU'
-import Login from './pages/Login/Login'
+import { BrowserRouter } from 'react-router-dom'
+import { Provider } from 'react-redux'
+import store, { persistor } from './store'
+import { PersistGate } from 'redux-persist/integration/react'
+import Loading from './components/common/Loading'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
     <React.StrictMode>
-        <ConfigProvider locale={locale}>
-            <Layout style={{ minHeight: '100vh' }}>
-                <App />
-                {/*<Login />*/}
-            </Layout>
-        </ConfigProvider>
+        <BrowserRouter>
+            <Provider store={store}>
+                <PersistGate persistor={persistor} liading={<Loading />}>
+                    <ConfigProvider locale={locale}>
+                        <Layout style={{ minHeight: '100vh' }}>
+                            <App />
+                        </Layout>
+                    </ConfigProvider>
+                </PersistGate>
+            </Provider>
+        </BrowserRouter>
     </React.StrictMode>
 )
 
