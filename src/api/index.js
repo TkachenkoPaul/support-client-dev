@@ -8,7 +8,7 @@ const api = axios.create({
     baseURL,
     withCredentials: true,
     // TODO добавить обработку ошибок по таймауту соединения
-    timeout: 5000,
+    timeout: 3000,
     headers: { Accept: 'application/json', Authorization: `Bearer ${token}` }
 })
 

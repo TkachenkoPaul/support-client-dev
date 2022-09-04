@@ -8,11 +8,11 @@ function Logout(props) {
     const { isAuth } = useAuth()
     const dispatch = useDispatch()
     if (!isAuth) {
-        return <Navigate to="login" />
+        return <Navigate to="/" />
     }
     dispatch(logout())
 
-    return <Navigate to="login" />
+    return <Navigate to="/" />
 }
 
 export default Logout

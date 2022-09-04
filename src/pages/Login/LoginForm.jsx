@@ -13,6 +13,7 @@ const LoginForm = () => {
     const location = useLocation()
     const origin = location.state?.from?.pathname || '/'
     if (isAuth) {
+        console.log(origin)
         return <Navigate to={origin} />
     }
     const onFinish = (values) => {
@@ -60,7 +61,7 @@ const LoginForm = () => {
                 </Button>
             </Form.Item>
 
-            {!!error && <Alert message="Ошибка" description={error} type="error" showIcon closable />}
+            {!!error && <Alert message="Ошибка" description={error?.message} type="error" showIcon closable />}
         </Form>
     )
 }

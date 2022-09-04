@@ -1,8 +1,15 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Breadcrumb, Menu, Table } from 'antd'
 import MainLayout from '../MainLayout/MainLayout'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchUsers } from '../../store/usersSlice'
 
 export const Users = () => {
+    const users = useSelector((state) => state.users.data)
+    const dispatch = useDispatch()
+    useEffect(() => {
+        dispatch(fetchUsers())
+    }, [])
     const columns = [
         {
             title: 'Name',
@@ -97,7 +104,7 @@ export const Users = () => {
     const [subTitle, setSubTitle] = useState('')
     const breadcrumb = (
         <Breadcrumb style={{ marginBottom: 12 }}>
-            <Breadcrumb.Item>Home</Breadcrumb.Item>
+            <Breadcrumb.Item>Клиенты</Breadcrumb.Item>
             <Breadcrumb.Item>
                 <a href="">Application Center</a>
             </Breadcrumb.Item>

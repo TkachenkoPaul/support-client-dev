@@ -1,13 +1,13 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { usersRequest, authAdminRequest } from '../api'
 
-export const fetchUsers = createAsyncThunk('fetch/users', async (userId, thunkAPI) => {
-    const response = await usersRequest()
-    return response.data
-})
-export const authAdmin = createAsyncThunk('auth/authAdmin', async (user, thunkAPI) => {
-    const response = await authAdminRequest(user)
-    return response.data
+export const authAdmin = createAsyncThunk('auth/authAdmin', async (user, { rejectWithValue }) => {
+    try {
+        const response = await authAdminRequest(user)
+        return response.data
+    } catch (e) {
+        return rejectWithValue(e)
+    }
 })
 
 const authSlice = createSlice({
@@ -43,6 +43,7 @@ const authSlice = createSlice({
         },
         [authAdmin.rejected]: (state, action) => {
             state.isLoading = false
+            state.error = action.payload.response.data
         }
     }
 })
