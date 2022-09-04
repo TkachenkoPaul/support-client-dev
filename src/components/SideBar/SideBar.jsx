@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-// import logo from '../logo.png'
 import logo from '../../pages/Login/logo.png'
 import { AutoComplete, Input, Layout, Menu } from 'antd'
 import { uuid } from 'uuidv4'
@@ -15,9 +14,6 @@ import {
     TeamOutlined,
     UserOutlined
 } from '@ant-design/icons'
-import SearchIcon from '@mui/icons-material/Search'
-import { alpha, styled } from '@mui/material/styles'
-import InputBase from '@mui/material/InputBase'
 import { Container } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 
@@ -91,7 +87,6 @@ const SideBar = (props) => {
         } else {
             navigate(key, { replace: false })
         }
-        console.log('key:', key)
     }
 
     return (

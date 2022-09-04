@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Breadcrumb, Table } from 'antd'
+import { Breadcrumb, Menu, Table } from 'antd'
 import MainLayout from '../MainLayout/MainLayout'
 
 export const Users = () => {
@@ -63,8 +63,38 @@ export const Users = () => {
             english: 89
         }
     ]
-    const [title, setTitle] = useState('erem-4-5')
-    const [subTitle, setSubTitle] = useState('РЦК')
+    const menu = (
+        <Menu
+            items={[
+                {
+                    key: '1',
+                    label: (
+                        <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">
+                            1st menu item
+                        </a>
+                    )
+                },
+                {
+                    key: '2',
+                    label: (
+                        <a target="_blank" rel="noopener noreferrer" href="http://www.taobao.com/">
+                            2nd menu item
+                        </a>
+                    )
+                },
+                {
+                    key: '3',
+                    label: (
+                        <a target="_blank" rel="noopener noreferrer" href="http://www.tmall.com/">
+                            3rd menu item
+                        </a>
+                    )
+                }
+            ]}
+        />
+    )
+    const [title, setTitle] = useState('Клиенты')
+    const [subTitle, setSubTitle] = useState('')
     const breadcrumb = (
         <Breadcrumb style={{ marginBottom: 12 }}>
             <Breadcrumb.Item>Home</Breadcrumb.Item>
@@ -83,8 +113,7 @@ export const Users = () => {
 
     return (
         <>
-            <MainLayout title={title} subtitle={subTitle} breadcrumb={breadcrumb}>
-                users page
+            <MainLayout title={title} subtitle={subTitle} breadcrumb={breadcrumb} menu={menu}>
                 <Table
                     style={{ minHeight: '100vh' }}
                     columns={columns}
