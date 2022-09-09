@@ -32,6 +32,7 @@ function getItem(label, key, icon, children, type) {
 const items = [
     getItem('Клиенты', '/', <TeamOutlined />),
 
+    getItem('Test', '/test', <MailOutlined />),
     getItem('Техническая поддержка', '/support', <MailOutlined />),
     getItem('Колл-цент', uuid(), <PhoneOutlined />, [
         getItem('Очередь', '/call-center/queue', <DashboardOutlined />),

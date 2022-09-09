@@ -8,6 +8,7 @@ import Support from './pages/Support/Support'
 import { NotFound } from './pages/NotFound/NotFound'
 import Login from './pages/Login/Login'
 import Logout from './pages/Logout/Logout'
+import Test from './pages/Test/Test'
 
 function App(props) {
     return (
@@ -15,8 +16,9 @@ function App(props) {
             <Routes>
                 <Route path="/" element={<AppLayout />}>
                     <Route index element={<Users />} />
-                    <Route path="user" element={<User />} />
+                    <Route path="user/:uid" element={<User />} />
                     <Route path="support" element={<Support />} />
+                    <Route path="test" element={<Test />} />
                     <Route path="*" element={<NotFound />} />
                 </Route>
                 <Route path="login" element={<Login />} />

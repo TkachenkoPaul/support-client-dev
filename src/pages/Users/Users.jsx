@@ -1,76 +1,122 @@
 import React, { useEffect, useState } from 'react'
-import { Breadcrumb, Menu, Table } from 'antd'
+import { Badge, Breadcrumb, Button, Menu, Table } from 'antd'
 import MainLayout from '../MainLayout/MainLayout'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchUsers } from '../../store/usersSlice'
+import { fetchUsers, setPagination, setSorter } from '../../store/usersSlice'
+import { useTariffStatus } from '../../hooks/useTariffStatus'
+import { useNavigate } from 'react-router-dom'
 
 export const Users = () => {
-    const users = useSelector((state) => state.users.data)
+    const navigate = useNavigate()
+    const users = useSelector((state) => state.users)
+    const paginationConfig = useSelector((state) => state.users.pagination)
+    const sort = useSelector((state) => state.users.sort)
     const dispatch = useDispatch()
+    const { getStatusName, getBadgeType } = useTariffStatus()
+
     useEffect(() => {
-        dispatch(fetchUsers())
-    }, [])
+        dispatch(
+            fetchUsers({
+                currentPage: paginationConfig.currentPage,
+                perPage: paginationConfig.perPage,
+                sort: sort.field,
+                order: sort.order
+            })
+        )
+    }, [paginationConfig, sort, dispatch])
     const columns = [
         {
-            title: 'Name',
-            dataIndex: 'name'
+            title: 'UID',
+            dataIndex: 'uid',
+            key: 'users.uid',
+            align: 'center',
+            sorter: true
         },
         {
-            title: 'Chinese Score',
-            dataIndex: 'chinese',
-            sorter: {
-                compare: (a, b) => a.chinese - b.chinese,
-                multiple: 3
-            }
+            title: 'Группа',
+            dataIndex: ['group', 'name'],
+            key: 'groups.name',
+            render: (text) => {
+                if (text) {
+                    return text
+                }
+                return ''
+            },
+            align: 'center',
+            sorter: true
         },
         {
-            title: 'Math Score',
-            dataIndex: 'math',
-            sorter: {
-                compare: (a, b) => a.math - b.math,
-                multiple: 2
-            }
+            title: 'Логин',
+            key: 'users.id',
+            dataIndex: 'login',
+            render: (text, record) => {
+                return (
+                    <Button
+                        type="link"
+                        onClick={() => {
+                            navigate(`/user/${record.uid}`)
+                        }}
+                    >
+                        {text}
+                    </Button>
+                )
+            },
+            align: 'center',
+            filterSearch: true,
+            sorter: true
         },
         {
-            title: 'English Score',
-            dataIndex: 'english',
-            sorter: {
-                compare: (a, b) => a.english - b.english,
-                multiple: 1
-            }
-        }
-    ]
-    const data = [
-        {
-            key: '1',
-            name: 'John Brown',
-            chinese: 98,
-            math: 60,
-            english: 70
+            key: 'tarif_plans.name',
+            title: 'Тариф',
+            dataIndex: ['tariff', 'name'],
+            render: (text) => {
+                return text ? text : ''
+            },
+            align: 'center',
+            sorter: true
         },
         {
-            key: '2',
-            name: 'Jim Green',
-            chinese: 98,
-            math: 66,
-            english: 89
+            key: 'dv_main.disable',
+            title: 'Статус',
+            dataIndex: ['tariff', 'status'],
+            render: (text) => {
+                return <Badge status={getBadgeType(text)} text={getStatusName(text)} />
+            },
+            align: 'center',
+            sorter: true
+        },
+
+        {
+            key: 'bills.deposit',
+            title: 'Депозит',
+            dataIndex: ['deposit', 'deposit'],
+            render: (text) => {
+                return text.toFixed(2)
+            },
+            align: 'center',
+            sorter: true
         },
         {
-            key: '3',
-            name: 'Joe Black',
-            chinese: 98,
-            math: 90,
-            english: 70
+            key: 'users_pi.fio',
+            title: 'ФИО',
+            dataIndex: ['contacts', 'fio'],
+            align: 'center'
         },
         {
-            key: '4',
-            name: 'Jim Red',
-            chinese: 88,
-            math: 99,
-            english: 89
+            ket: 'users_pi.phone',
+            title: 'Телефон',
+            dataIndex: ['contacts', 'phone'],
+            align: 'center'
+        },
+        {
+            key: 'users_pi.address',
+            title: 'Адрес',
+            dataIndex: ['contacts', 'address'],
+            align: 'center'
         }
     ]
     const menu = (
+        /*    {{baseUrl}}/billing/users?page=1&perpage=3&filter[contacts.fio]=иванов   */
         <Menu
             items={[
                 {
@@ -104,31 +150,42 @@ export const Users = () => {
     const [subTitle, setSubTitle] = useState('')
     const breadcrumb = (
         <Breadcrumb style={{ marginBottom: 12 }}>
-            <Breadcrumb.Item>Клиенты</Breadcrumb.Item>
-            <Breadcrumb.Item>
-                <a href="">Application Center</a>
-            </Breadcrumb.Item>
-            <Breadcrumb.Item>
-                <a href="">Application List</a>
-            </Breadcrumb.Item>
-            <Breadcrumb.Item>An Application</Breadcrumb.Item>
+            <Breadcrumb.Item></Breadcrumb.Item>
         </Breadcrumb>
     )
     const onChange = (pagination, filters, sorter, extra) => {
-        console.log('params', pagination, filters, sorter, extra)
+        if (Object.keys(sorter).length !== 0) {
+            // onSorterChange(sorter)
+            onSorterChange({ order: sorter.order, field: sorter.columnKey })
+            console.log(sorter)
+        }
+        dispatch(setPagination(pagination))
     }
-
+    const onSorterChange = (sorter) => {
+        dispatch(setSorter(sorter))
+    }
+    const showTotal = (total, range) => `${range[0]}-${range[1]}  из  ${total} записей`
     return (
         <>
-            <MainLayout title={title} subtitle={subTitle} breadcrumb={breadcrumb} menu={menu}>
+            <MainLayout title={title} subtitle={subTitle} breadcrumb={false} menu={menu}>
                 <Table
-                    style={{ minHeight: '100vh' }}
+                    tableLayout={'auto'}
+                    loading={users.isLoading}
+                    rowKey={(record) => record.uid}
                     columns={columns}
-                    dataSource={data}
+                    dataSource={users.data}
                     onChange={onChange}
                     pagination={{
-                        hideOnSinglePage: true,
-                        position: ['bottomRight']
+                        showTotal,
+                        showLessItems: true,
+                        total: paginationConfig.total,
+                        pageSize: paginationConfig.perPage,
+                        responsive: true,
+                        showQuickJumper: true,
+                        hideOnSinglePage: false,
+                        position: ['bottomRight'],
+                        showSizeChanger: true,
+                        pageSizeOptions: ['10', '25', '50', '100']
                     }}
                 />
             </MainLayout>

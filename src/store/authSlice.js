@@ -1,10 +1,13 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { usersRequest, authAdminRequest } from '../api'
+import { authAdminRequest } from '../api'
 
 export const authAdmin = createAsyncThunk('auth/authAdmin', async (user, { rejectWithValue }) => {
     try {
         const response = await authAdminRequest(user)
-        return response.data
+        if (response?.name === 'AxiosError') {
+            throw Error(response.message)
+        }
+        return await response.data
     } catch (e) {
         return rejectWithValue(e)
     }
@@ -16,7 +19,7 @@ const authSlice = createSlice({
         isLoading: false,
         error: null,
         token: null,
-        users: []
+        user: []
     },
     reducers: {
         setIsLoading(state, action) {
@@ -39,11 +42,12 @@ const authSlice = createSlice({
         },
         [authAdmin.fulfilled]: (state, action) => {
             state.token = action.payload.authorization.token
+            state.user = action.payload.user
             state.isLoading = false
         },
         [authAdmin.rejected]: (state, action) => {
             state.isLoading = false
-            state.error = action.payload.response.data
+            state.error = action.payload
         }
     }
 })

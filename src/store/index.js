@@ -3,16 +3,28 @@ import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, 
 import authSlice from './authSlice'
 import storage from 'redux-persist/lib/storage'
 import usersSlice from './usersSlice'
+import userSlice from './userSlice'
+import hardSet from 'redux-persist/es/stateReconciler/hardSet'
+import expireReducer from 'redux-persist-expire'
 
 const persistConfig = {
-    key: 'root',
+    key: 'auth',
     storage,
-    blacklist: ['isLoading']
+    transforms: [
+        expireReducer('test', {
+            persistedAtKey: '__persisted_at',
+
+            expireSeconds: 20,
+            expiredState: { done: 1 },
+            autoExpire: false
+        })
+    ]
 }
 const persistAuthReducer = persistReducer(persistConfig, authSlice)
 const rootReducer = combineReducers({
     auth: persistAuthReducer,
-    users: usersSlice
+    users: usersSlice,
+    user: userSlice
 })
 const store = configureStore({
     reducer: rootReducer,
@@ -24,5 +36,5 @@ const store = configureStore({
         })
 })
 
-export const persistor = persistStore(store)
+export const persist = persistStore(store)
 export default store

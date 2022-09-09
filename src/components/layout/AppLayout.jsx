@@ -8,7 +8,6 @@ import { useAuth } from '../../hooks/useAuth'
 function AppLayout(props) {
     const { isAuth } = useAuth()
     const location = useLocation()
-    console.log(isAuth)
     if (!isAuth) {
         return <Navigate to="login" replace state={{ from: location }} />
     }

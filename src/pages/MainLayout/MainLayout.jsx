@@ -11,12 +11,12 @@ function MainLayout(props) {
                     margin: '24px 16px 0'
                 }}
             >
-                {props.breadcrumb}
+                {props.breadcrumb && ''}
                 <div
                     className="site-layout-background"
                     style={{
-                        padding: 24,
-                        minHeight: '100vh'
+                        padding: 24
+                        // minHeight: '100vh'
                     }}
                 >
                     {props.children}
